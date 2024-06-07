@@ -20,7 +20,7 @@ public class CourseController {
 
     // Obtener toda la lista de cursos pero de un alumno.
     @GetMapping("/listCourses/{idUsuario}")
-    public ResponseEntity<List<DTOListaCursos>> getListCourseForUser(@PathVariable Long idUsuario){
+    public ResponseEntity<List<DTOListaCursos>> getListCourseForUserId(@PathVariable Long idUsuario){
         List<DTOListaCursos> list = cursoService.getAllCursosForUserId(idUsuario);
         return ResponseEntity.ok(list);
     }
