@@ -54,4 +54,14 @@ public class GroupController {
         return ResponseEntity.ok(dtoGrupoExistente);
     }
 
+    @GetMapping("/groups/{idUsuario}/{idCurso}")
+    public ResponseEntity<List<DTOListaGrupos>> getGroupsUser(@PathVariable Long idUsuario, @PathVariable Long idCurso) {
+        List<Grupo> grupos = miembroGrupoService.findGrupobyIdUserAndCursoId(idUsuario, idCurso);
+
+        List<DTOListaGrupos> dtoGrupos = grupos.stream()
+                .map(DTOListaGrupos::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtoGrupos);
+    }
 }

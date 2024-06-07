@@ -28,4 +28,8 @@ public class MiembroGrupoService {
     public List<MiembroGrupo> getMiembrosByGrupo(Grupo grupo) {
         return miembroGrupoRepository.findByGrupo(grupo);
     }
+
+    public List<Grupo> findGrupobyIdUserAndCursoId(Long idUsuario, Long idCurso) {
+        return miembroGrupoRepository.findGrupobyIdUserAndCursoId(idUsuario, idCurso);
+    }
 }
