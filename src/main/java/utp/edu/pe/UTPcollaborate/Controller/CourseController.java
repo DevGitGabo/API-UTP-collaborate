@@ -18,7 +18,13 @@ public class CourseController {
     @Autowired
     private CursoService cursoService;
 
-    // Proximamente Modificarlo para que puedas obtener toda la lista de cursos pero de un alumno.
+    // Obtener toda la lista de cursos pero de un alumno.
+    @GetMapping("/listCourses/{idUsuario}")
+    public ResponseEntity<List<DTOListaCursos>> getListCourseForUser(@PathVariable Long idUsuario){
+        List<DTOListaCursos> list = cursoService.getAllCursosForUserId(idUsuario);
+        return ResponseEntity.ok(list);
+    }
+
     @GetMapping("/list")
     public ResponseEntity<List<DTOListaCursos>> getListCourse(){
         List<DTOListaCursos> list = cursoService.getAllCursos();

@@ -30,6 +30,14 @@ public class CursoService {
                 .collect(Collectors.toList());
     }
 
+    public List<DTOListaCursos> getAllCursosForUserId(Long idCurso){
+        List<Curso> listCursosForUser = cursoRepository.findCursosByIdUser(idCurso);
+        return listCursosForUser.stream()
+                .map(curso -> new DTOListaCursos(curso.getId_curso(), curso.getNombre_curso()))
+                .collect(Collectors.toList());
+    }
+
+
     public List<DTOListaAlumnosCurso> getAlumnosByCurso(Long idCurso){
         List<Usuario> listUsuario = detalleCursoRepository.getUsuariosByCourse(idCurso);
         return listUsuario.stream()
