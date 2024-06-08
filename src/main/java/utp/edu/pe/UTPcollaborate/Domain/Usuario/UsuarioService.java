@@ -3,6 +3,9 @@ package utp.edu.pe.UTPcollaborate.Domain.Usuario;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import utp.edu.pe.UTPcollaborate.Domain.DetalleCurso.DetalleCursoRepository;
+import utp.edu.pe.UTPcollaborate.Domain.MiembroGrupo.DTOAceptInvitations;
+import utp.edu.pe.UTPcollaborate.Domain.MiembroGrupo.MiembroGrupo;
+import utp.edu.pe.UTPcollaborate.Domain.MiembroGrupo.MiembroGrupoRepository;
 import utp.edu.pe.UTPcollaborate.Domain.Publicacion.DTOPost;
 import utp.edu.pe.UTPcollaborate.Domain.Publicacion.PublicacionRepository;
 import utp.edu.pe.UTPcollaborate.Domain.UsuarioInsignia.UsuarioInsigniaRepository;
@@ -20,13 +23,15 @@ public class UsuarioService {
     private final DetalleCursoRepository detalleCursoRepository;
     private final UsuarioMisionRepository usuarioMisionRepository;
     private final PublicacionRepository publicacionRepository;
+    private final MiembroGrupoRepository miembroGrupoRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, UsuarioInsigniaRepository usuarioInsigniaRepository, DetalleCursoRepository detalleCursoRepository, UsuarioMisionRepository usuarioMisionRepository, PublicacionRepository publicacionRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, UsuarioInsigniaRepository usuarioInsigniaRepository, DetalleCursoRepository detalleCursoRepository, UsuarioMisionRepository usuarioMisionRepository, PublicacionRepository publicacionRepository, MiembroGrupoRepository miembroGrupoRepository) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioInsigniaRepository = usuarioInsigniaRepository;
         this.detalleCursoRepository = detalleCursoRepository;
         this.usuarioMisionRepository = usuarioMisionRepository;
         this.publicacionRepository = publicacionRepository;
+        this.miembroGrupoRepository = miembroGrupoRepository;
     }
 
     public List<DTOListadoUsuarios> getRecomendedUsuarios(Long userId) {
@@ -113,4 +118,22 @@ public class UsuarioService {
         usuarioRepository.save(userExist);
     }
 
+    @Transactional
+    public void updateMiembroGrupo(DTOAceptInvitations dtoAceptInvitations) {
+
+
+
+        /*//usuario al que fue enviado la solicitud
+        Usuario usuario = usuarioRepository.findById(dtoAceptInvitations.id_usuario())
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));*/
+
+        MiembroGrupo miembroGrupo = miembroGrupoRepository.findByUsuarioIdAndCursoId(
+                        dtoAceptInvitations.id_usuario(), dtoAceptInvitations.id_grupo())
+                .orElseThrow(() -> new IllegalArgumentException("Miembro del grupo no encontrado"));
+
+        //
+        miembroGrupo.setStatus(dtoAceptInvitations.status());
+
+        miembroGrupoRepository.save(miembroGrupo);
+    }
 }

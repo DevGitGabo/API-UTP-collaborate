@@ -1,8 +1,10 @@
 package utp.edu.pe.UTPcollaborate.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import utp.edu.pe.UTPcollaborate.Domain.MiembroGrupo.DTOAceptInvitations;
 import utp.edu.pe.UTPcollaborate.Domain.Usuario.DTOInfoUsuario;
 import utp.edu.pe.UTPcollaborate.Domain.Usuario.DTOListadoUsuarios;
 import utp.edu.pe.UTPcollaborate.Domain.Usuario.UsuarioService;
@@ -32,5 +34,12 @@ public class FriendsController {
     public ResponseEntity<List<DTOListadoUsuarios>> usuariosRecomendados(@RequestParam Long userId) {
         List<DTOListadoUsuarios> recomendados = usuarioService.getRecomendedUsuarios(userId);
         return ResponseEntity.ok(recomendados);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> aceptInvitations(@RequestBody DTOAceptInvitations dtoAceptInvitations){
+        usuarioService.updateMiembroGrupo(dtoAceptInvitations);
+        return ResponseEntity.status(HttpStatus.CREATED).body("El usuario contesto la invitacion");
+
     }
 }
